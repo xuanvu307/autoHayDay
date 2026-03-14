@@ -30,10 +30,9 @@ if (!files.exists(configPath)) {
     }
     files.write(configPath, JSON.stringify(defaultConfig, null, 4));
 }
-var data = "abc"
-showDashboard(data);
+showDashboard();
 // ================= DASHBOARD =================
-function showDashboard(data) {
+function showDashboard() {
 
     ui.layout(
         <vertical bg="#F5F7FA">
