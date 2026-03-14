@@ -48,7 +48,7 @@ function showDashboard() {
                             textSize="20sp"
                             textStyle="bold" />
 
-                        <text text={"Key: " + data.key + " | HSD: " + data.expire}
+                        <text text={"Key: " + "ABC" + " | HSD: " + "data.expire"}
                             textColor="#BBDEFB"
                             textSize="13sp"
                             marginTop="3" />
@@ -757,18 +757,18 @@ function showSettingPage2(data) {
         </vertical>
     );
     ui.menuHome.click(function () {
-        showSettingPage2(data);
+        showSettingPage2();
     });
 
     ui.menuSetting.click(function () {
-        showSettingPage(data);
+        showSettingPage();
     });
 
     ui.menuLog.click(function () {
-        showSettingPage3(data);
+        showSettingPage3();
     });
 }
-function showSettingPage3(data) {
+function showSettingPage3() {
     ui.layout(
         <vertical bg="#F5F7FA">
 
@@ -867,14 +867,14 @@ function showSettingPage3(data) {
         </vertical>
     );
     ui.menuHome.click(function () {
-        showSettingPage2(data);
+        showSettingPage2();
     });
 
     ui.menuSetting.click(function () {
-        showSettingPage(data);
+        showSettingPage();
     });
 
     ui.menuLog.click(function () {
-        showSettingPage3(data);
+        showSettingPage3();
     });
 }
