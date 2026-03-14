@@ -314,7 +314,38 @@ function showDashboard() {
         });
         storage.remove("user_key");
 
-        engines.execScriptFile(files.cwd() + "/loader.js");
+        let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/auto.js";
+
+        threads.start(function () {
+            try {
+                let r = http.get(url);
+                if (r.statusCode != 200) {
+                    toast("Server lỗi");
+                    return;
+                }
+
+                let code = r.body.string();
+
+                // tắt script cũ
+                engines.all().forEach(e => {
+                    if (e.id != engines.myEngine().id) {
+                        e.forceStop();
+                    }
+                });
+
+                // chạy script chính
+                engines.execScript("auto_main", code);
+
+                ui.run(() => ui.finish());
+
+            } catch (e) {
+
+                log(e);
+                toast("Không tải được script");
+
+            }
+
+        });
 
         engines.myEngine().forceStop();
 
