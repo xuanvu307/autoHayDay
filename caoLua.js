@@ -1,7 +1,7 @@
 auto.waitFor();
 
 
-const soAccChayMotVong = 15;
+const soAccChayMotVong = 15;     // max 90 farm mỗi agent 30 farm
 var nangDat = true;
 const nangBarn = true;
 const nangSilo = true;
@@ -9,12 +9,7 @@ const soVongNangKho = 30;
 
 const launchName = "ru.xomka.hdagent2";
 
-const toaDoAcc = [
-    [[86, 53], [400, 53]], [[86, 74], [400, 74]], [[86, 95], [400, 95]], [[86, 116], [400, 116]],
-    [[86, 137], [400, 137]], [[86, 158], [400, 158]], [[86, 179], [400, 179]], [[86, 200], [400, 200]],
-    [[86, 225], [400, 225]], [[86, 247], [400, 247]]
-];
-
+var accHienTai = [100, 52];
 //copy file
 
 var pkg = "com.supercell.hayday";
@@ -23,7 +18,7 @@ var dest = "/data/data/" + pkg + "/update/data";
 if (!files.exists(source)) {
     exit();
 }
-shell("am force-stop " + pkg, true); 
+shell("am force-stop " + pkg, true);
 sleep(600);
 shell("su -c 'rm -rf \"" + dest + "\"'", true);
 shell("su -c 'mkdir -p \"" + dest + "\"'", true);
@@ -35,26 +30,26 @@ sleep(1000)
 
 
 // bấm dấu X
+function soMauTaiDiem(x, y, mauCanSo, doLech) {
+    try {
+        var img = captureScreen();
+        var mau = images.pixel(img, x, y);
+        img.recycle();
+    } catch (error) {
+        toast(error);
+    }
+    return colors.isSimilar(mau, mauCanSo, doLech || 10);
+}
 
 function checkPopupX() {
-    var pts = [[455, 160], [460, 160], [450, 160], [455, 155], [455, 165],[590,75]];
-    var target = colors.parseColor("#E63D46"), tol = 65;
-    var img = null; try { img = captureScreen(); } catch (e) { img = null; }
-    if (!img) return false;
+    var pts = [[455, 160], [460, 160], [450, 160], [455, 155], [455, 165]];
     for (var i = 0; i < pts.length; i++) {
-        waitIfPaused();
-        var c = images.pixel(img, pts[i][0], pts[i][1]);
-        if (Math.abs(colors.red(c) - colors.red(target)) <= tol &&
-            Math.abs(colors.green(c) - colors.green(target)) <= tol &&
-            Math.abs(colors.blue(c) - colors.blue(target)) <= tol) {
+        tamDung()
+        if (soMauTaiDiem(pts[i][0], pts[i][1], "#E63D46", 50)) {
             click(pts[i][0], pts[i][1]);
             sleep(500);
-            try { images.recycle(img); } catch (e) { }
-            return true;
         }
     }
-    try { images.recycle(img); } catch (e) { }
-    return false;
 }
 
 const toadoCao = [
@@ -118,70 +113,69 @@ function caoLua() {
 }
 
 // chạy agent
-function moAgent(index) {
-    try {
-        app.launchPackage(launchName);
-    } catch (e) { }
+function moAgent() {
+    app.launchPackage(launchName);
     waitIfPaused();
     sleep(1500);
-    // check bấm mở rộng acc agent
-    try {
-        var img = null;
-        img = captureScreen();
-        waitIfPaused();
-        sleep(500)
-        if (img) {
-            var color = images.pixel(img, 260, 60);
-            var r = colors.red(color), g = colors.green(color), b = colors.blue(color);
-            if (Math.abs(r - 245) <= 5 && Math.abs(g - 124) <= 5 && Math.abs(b - 0) <= 5) {
-                click(610, 38);
-                sleep(2200);
-            }
-        }
-        images.recycle(img);
-    } catch (error) {
-        toast(error)
-    }
-    if (index < 1 || index > 30) return;
-    var i = index - 1, row = Math.floor(i / 2), side = i % 2, xy = toaDoAcc[row][side];
     waitIfPaused();
-    click(xy[0], xy[1]);
+    if (soMauTaiDiem(621, 40, "#f57c00", 20)) {
+        waitIfPaused();
+        tap(621, 40, 3000);
+        waitIfPaused();
+    } else {
+        waitIfPaused();
+        click(accHienTai[0], accHienTai[1]);
+        waitIfPaused();
+        timeLoadFarm();
+    }
 }
 
-
-function timeLoadFarm(acc, vong, timeout, tolerance) {
-    timeout = (typeof timeout === "number") ? timeout : 30000;
-    tolerance = (typeof tolerance === "number") ? tolerance : 65;
-    var start = new Date().getTime(), found = false;
-    var points = [[27, 252], [30, 252], [24, 252]];
-    var RR = 177, GG = 128, BB = 60;
-    while (new Date().getTime() - start < timeout) {
+function timeLoadFarm(timeout, tolerance) {
+    timeout = timeout ?? 30000;
+    tolerance = tolerance ?? 65;
+    let start = Date.now(), found = false;
+    let points = [[27, 252], [30, 252], [24, 252]];
+    while (Date.now() - start < timeout) {
+        bamDauX();
         waitIfPaused();
-        checkPopupX();
-        var img = null;
-        try {
-            img = captureScreen();
-            if (img) {
-                for (var i = 0; i < points.length; i++) {
-                    var x = points[i][0], y = points[i][1];
-                    var color = images.pixel(img, x, y);
-                    var r = colors.red(color), g = colors.green(color), b = colors.blue(color);
-                    var dist = Math.sqrt((r - RR) * (r - RR) + (g - GG) * (g - GG) + (b - BB) * (b - BB));
-                    if (dist <= tolerance) { found = true; break; }
-                }
+        for (let [x, y] of points) {
+            if (soMauTaiDiem(x, y, "#B1803C", tolerance)) {
+                found = true;
+                return;
             }
-            images.recycle(img)
-        } catch (e) {
-            toast(e)
         }
         if (found) break;
         waitIfPaused();
-        sleep(found ? 0 : 600 + random(20, 200));
+        sleep(2000);
+        waitIfPaused();
     }
-    if (!found) toast("Load farm lỗi");
+    if (!found) {
+        toast("Lỗi load farm chờ load lại")
+        moAgent();
+    }
     return found;
 }
+var acc = 1;
 
+function tangAcc() {
+  if (acc > 90) {
+    acc = 1;
+    accHienTai = [100, 52];
+    launchName = "ru.xomka.hdagent2";
+  } else if (acc == 61 && soAccChayMotVong > 60) {
+    accHienTai = [100, 52];
+    launchName = "ru.xomka.hdagent4";
+  } else if (acc == 31 && soAccChayMotVong > 30) {
+    accHienTai = [100, 52];
+    launchName = "ru.xomka.hdagent3";
+  } else if (acc % 2 == 1) {
+    accHienTai[0] = 100;
+    accHienTai[1] += 22;
+  } else {
+    accHienTai[0] = 450;
+  }
+  moAgent();
+}
 
 // mua đất
 
@@ -300,44 +294,6 @@ function banhMi() {
     swipe(200, 110, 240, 160, 100);
 }
 
-"auto";
-"floaty";
-"threads";
-
-// ===================================================
-// TẠO BẢNG NÚT ĐIỀU KHIỂN FLOATY
-// ===================================================
-var panel = floaty.window(
-    <frame bg="#11000000" padding="4">
-        <vertical>
-            <button id="btnPause" text="⏸ PAUSE" textSize="12sp" padding="6" />
-            <button id="btnStop" text="⛔ STOP" textSize="12sp" padding="6" />
-        </vertical>
-    </frame>
-);
-
-panel.setSize(-2, -2);
-panel.setPosition(2, 300);
-
-var paused = false;
-
-
-panel.btnPause.on("click", () => {
-    paused = !paused;
-    panel.btnPause.setText(paused ? "▶ CONTINUE" : "⏸ PAUSE");
-    toast(paused ? "Tạm dừng" : "Tiếp tục");
-});
-
-panel.btnStop.on("click", () => {
-    exit();
-    toast("Đã dừng Auto");
-});
-
-function waitIfPaused() {
-    while (paused) {
-        sleep(500);
-    }
-}
 
 
 //bắt đầu chạy
@@ -349,16 +305,14 @@ threads.start(function () {
         if (vong > 65) {
             nangDat = false;
         }
-        for (var acc = 1; acc <= soAccChayMotVong; acc++) {
-            moAgent(acc);
+        for (var i = 1; i <= soAccChayMotVong; i++) {
+            moAgent();
             waitIfPaused();
             sleep(3000)
             toast("Vòng " + vong + " Acc " + acc);
             if (timeLoadFarm(acc, vong)) {
                 waitIfPaused();
                 caoLua();
-                waitIfPaused();
-                banhMi();
                 waitIfPaused();
                 banShop();
                 waitIfPaused();
@@ -375,6 +329,8 @@ threads.start(function () {
                 waitIfPaused();
                 sleep(800);
             }
+            acc++;
+            tangAcc();
         }
     }
 });
@@ -509,3 +465,42 @@ function banShop() {
 }
 
 
+"auto";
+"floaty";
+"threads";
+
+// ===================================================
+// TẠO BẢNG NÚT ĐIỀU KHIỂN FLOATY
+// ===================================================
+var panel = floaty.window(
+    <frame bg="#11000000" padding="4">
+        <vertical>
+            <button id="btnPause" text="⏸ PAUSE" textSize="12sp" padding="6" />
+            <button id="btnStop" text="⛔ STOP" textSize="12sp" padding="6" />
+            <text id = "txt" text = "Chờ Load" textSize="12sp" padding="6" />
+        </vertical>
+    </frame>
+);
+
+panel.setSize(-2, -2);
+panel.setPosition(2, 300);
+
+var paused = false;
+
+panel.txt.setText = "V:" + vong+ " A: " + acc;
+panel.btnPause.on("click", () => {
+    paused = !paused;
+    panel.btnPause.setText(paused ? "▶ CONTINUE" : "⏸ PAUSE");
+    toast(paused ? "Tạm dừng" : "Tiếp tục");
+});
+
+panel.btnStop.on("click", () => {
+    exit();
+    toast("Đã dừng Auto");
+});
+
+function waitIfPaused() {
+    while (paused) {
+        sleep(500);
+    }
+}

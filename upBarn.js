@@ -14,7 +14,7 @@ const toaDoOShop = [
 ]
 
 // tải mã farm
-var url = "http://192.168.100.125:8000/maFarm.txt";
+var url = "http://192.168.1.2:8000/maFarm.txt";
 
 
 var res = http.get(url);
@@ -29,8 +29,8 @@ if (res.statusCode == 200) {
 
 //config data
 let config = engines.myEngine().execArgv;
-var kieuBan = config.kieuBan;   
-var loaiHang = config.loaiHang; 
+var kieuBan = config.kieuBan;
+var loaiHang = config.loaiHang;
 var banRandom = true;
 if (kieuBan === 1) {
   banRandom = false;
@@ -424,28 +424,22 @@ function ketBan() {
   input(first);
   tamDung();
   sleep(500);
-  tamDung();
   tap(445, 165);
-  tamDung();
   sleep(100);
 
   if (!choMauClick(410, 240, "#59ce39", 30, 15000, true)) {
-    toast("ADD LỖI")
-    writeLog("ACC " + acc  + " lỗi tìm mã " + first);
-    acc++;
-    return;
+    toast("Lỗi kết bạn tiến hành load và up lại")
+    moAgent();
+    addMa();
   }
 
   if (!choChuyenMau(410, 240, "#fff9db", 30, 15000, false)) {
-    toast("ADD LỖI")
-    writeLog("ACC " + acc  + " lỗi add mã " + first);
-    acc++;
-    return;
+    toast("Lỗi kết bạn tiến hành load và up lại")
+    moAgent();
+    addMa();
   }
-
-  toast("Mã " + first + " add thành công");
-  writeLog("#" + first + " add thành công")
-  tamDung();
+  toast("# " + first + " OK");
+  writeLog("#" + first + " OK");
   sleep(1000);
   acc++;
 }
@@ -472,7 +466,7 @@ function xoaAcc() {
   if (soMauTaiDiem(260, 60, "#F57c00", 20)) {
     toast("Hết Acc");
     let content = files.read(LOG_PATH);
-    let ib = "Máy Test \n" + content
+    let ib = "Máy 40: \n" + content
     sendTelegramLog(ib);
     dialogs.alert("KẾT QUẢ", content);
     exit();

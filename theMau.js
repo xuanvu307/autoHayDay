@@ -188,6 +188,7 @@ function timeLoadFarm(timeout, tolerance) {
   }
   return found;
 }
+
 //add frend
 function moDanhSach() {
   tap(610, 455, 1000);
@@ -352,6 +353,10 @@ function xoaThe() {
     if (soMauTaiDiem(x, y, "#d7ac92", 40)) {
       continue;
     } else if (soMauTaiDiem(x, y, "#D1E7BF", 20)) {
+      if(addThe){
+        tap(x,y,30);
+        tap(444,330,30)
+      }
       dem++;
     } else {
       tap(x, y, 30);
