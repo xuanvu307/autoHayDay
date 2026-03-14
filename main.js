@@ -29,7 +29,6 @@ if (!files.exists(configPath)) {
     }
     files.write(configPath, JSON.stringify(defaultConfig, null, 4));
 }
-toast("load")
 showDashboard();
 // ================= DASHBOARD =================
 function showDashboard() {
