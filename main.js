@@ -30,7 +30,7 @@ if (!files.exists(configPath)) {
     }
     files.write(configPath, JSON.stringify(defaultConfig, null, 4));
 }
-
+var data = storage.get("user_key");
 showDashboard(data);
 // ================= DASHBOARD =================
 function showDashboard(data) {
