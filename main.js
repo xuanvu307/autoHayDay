@@ -1,7 +1,7 @@
 "ui";
 // ================= TẠO FILE SETTING =================
 var configPath = "/sdcard/Download/config.json";
-
+ui.finish();
 if (!files.exists(configPath)) {
     let defaultConfig = {
         "cao": {
