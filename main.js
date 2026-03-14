@@ -297,7 +297,7 @@ function showDashboard() {
         toast("Auto chưa được cài đặt");
     });
     ui.cardSetting.on("click", function () {
-        showSettingPage(data);
+        showSettingPage();
     });
 
     // ui.cardLogout.on("click", function () {
@@ -406,7 +406,7 @@ function uiUpbarn() {
     );
 
     ui.btnBackHome.on("click", function () {
-        showDashboard(data);
+        showDashboard();
     });
 
     ui.btnStart.on("click", function () {
@@ -427,13 +427,13 @@ function uiUpbarn() {
         config.upBarn.banRd = banRd;
         config.upBarn.loaiHang = loaiHang;
         files.write(configPath, JSON.stringify(config));
-        showDashboard(data);
+        showDashboard();
     });
 
 
 }
 // ================= SETTINGS PAGE =================
-function showSettingPage(data) {
+function showSettingPage() {
     ui.layout(
         <vertical bg="#F5F7FA">
 
@@ -642,23 +642,23 @@ function showSettingPage(data) {
 
         files.write(setting, JSON.stringify(config));
 
-        showDashboard(data);
+        showDashboard();
 
     });
     ui.menuHome.click(function () {
-        showSettingPage2(data);
+        showSettingPage2();
     });
 
     ui.menuSetting.click(function () {
-        showSettingPage(data);
+        showSettingPage();
     });
 
     ui.menuLog.click(function () {
-        showSettingPage3(data);
+        showSettingPage3();
     });
 }
 
-function showSettingPage2(data) {
+function showSettingPage2() {
     ui.layout(
         <vertical bg="#F5F7FA">
 
