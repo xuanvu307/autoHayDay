@@ -74,28 +74,35 @@ function showLoginPage() {
 
 // ================= CHECK KEY =================
 function checkKey(key) {
-
     ui.statusText.setText("Đang kiểm tra...");
-
     threads.start(function () {
         var androidId = device.getAndroidId();
         try {
             var url = "http://47.84.93.84/check?key=" + key + "&device=" + androidId;
-
             var res = http.get(url, { timeout: 8000 });
-
             if (res.statusCode != 200) {
                 throw "Server lỗi: " + res.statusCode;
             }
-
             var data = res.body.json();
-
             ui.run(function () {
-
                 if (data.status) {
                     storage.put("user_key", key);
                     data.key = key;
-                    showDashboard(data);
+                    let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/main.js";
+                    threads.start(function () {
+                        try {
+                            let res = http.get(url);
+                            if (res.statusCode != 200) {
+                                toast("Load code thất bại");
+                                return;
+                            }
+                            let code = res.body.string();
+                            eval(code);
+
+                        } catch (e) {
+                            log(e);
+                        }
+                    });
                 } else {
                     ui.statusText.setText(data.message || "Key không hợp lệ");
                 }
