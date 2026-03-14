@@ -1,6 +1,11 @@
 "ui";
 // ================= TẠO FILE SETTING =================
 var configPath = "/sdcard/Download/config.json";
+var storage = storages.create("APP_LICENSE");
+
+
+
+
 if (!files.exists(configPath)) {
     let defaultConfig = {
         "cao": {
@@ -302,9 +307,15 @@ function showDashboard() {
     });
 
     ui.cardLogout.on("click", function () {
+
         storage.remove("user_key");
-        engines.execScriptFile(engines.myEngine().getSource());
+
+        let loader = storage.get("loader_path");
+
+        engines.execScriptFile(loader);
+
         engines.myEngine().forceStop();
+
     });
 }
 
