@@ -307,11 +307,6 @@ function showDashboard() {
     });
 
     ui.cardLogout.on("click", function () {
-        engines.all().forEach(e => {
-            if (e.id != engines.myEngine().id) {
-                e.forceStop();
-            }
-        });
         storage.remove("user_key");
 
         let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/auto.js";
