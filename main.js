@@ -267,17 +267,17 @@ function showDashboard() {
         return decrypted.toString(CryptoJS.enc.Utf8);
     }
     function cao() {
-        var url = "http://47.84.93.84/code?key=" + d.key + "&device=" + device.getAndroidId();
+        // var url = "http://47.84.93.84/code?key=" + d.key + "&device=" + device.getAndroidId();
 
-        let r = http.get(url);
-        let data1 = r.body.json();
+        // let r = http.get(url);
+        // let data1 = r.body.json();
 
-        if (data1.status) {
-            eval(data1.code)
+        // if (data1.status) {
+        //     eval(data1.code)
 
-        } else {
-            toast("Key lỗi");
-        }
+        // } else {
+        //     toast("Key lỗi");
+        // }
 
     }
     // ===== CLICK EVENTS =====
