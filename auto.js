@@ -2,9 +2,7 @@
 ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
-// ===== START =====
 showLoginPage();
-// ================= LOGIN =================
 function showLoginPage() {
     ui.layout(
         <frame bg="#E3F2FD">
@@ -72,7 +70,6 @@ function showLoginPage() {
     });
 }
 
-// ================= CHECK KEY =================
 function checkKey(key) {
     ui.statusText.setText("Đang kiểm tra...");
     threads.start(function () {

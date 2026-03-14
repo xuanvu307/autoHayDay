@@ -17,21 +17,21 @@ const toaDoAcc = [
 
 //copy file
 
-var pkg = "com.supercell.hayday";
-var source = "/storage/emulated/0/Download/data/filecao";
-var dest = "/data/data/" + pkg + "/update/data";
-if (!files.exists(source)) {
-    exit();
-}
-shell("am force-stop " + pkg, true); 
-sleep(600);
-shell("su -c 'rm -rf \"" + dest + "\"'", true);
-shell("su -c 'mkdir -p \"" + dest + "\"'", true);
-shell("su -c 'cp -af \"" + source + "/.\" \"" + dest + "/\"'", true);
+// var pkg = "com.supercell.hayday";
+// var source = "/storage/emulated/0/Download/data/filecao";
+// var dest = "/data/data/" + pkg + "/update/data";
+// if (!files.exists(source)) {
+//     exit();
+// }
+// shell("am force-stop " + pkg, true); 
+// sleep(600);
+// shell("su -c 'rm -rf \"" + dest + "\"'", true);
+// shell("su -c 'mkdir -p \"" + dest + "\"'", true);
+// shell("su -c 'cp -af \"" + source + "/.\" \"" + dest + "/\"'", true);
 
-sleep(1000)
-toast("Đang copy file Game")
-sleep(1000)
+// sleep(1000)
+// toast("Đang copy file Game")
+// sleep(1000)
 
 
 // bấm dấu X
