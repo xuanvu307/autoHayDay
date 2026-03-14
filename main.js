@@ -29,6 +29,7 @@ if (!files.exists(configPath)) {
     }
     files.write(configPath, JSON.stringify(defaultConfig, null, 4));
 }
+ui.finish();
 showDashboard();
 // ================= DASHBOARD =================
 function showDashboard() {
