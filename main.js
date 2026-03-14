@@ -300,11 +300,11 @@ function showDashboard() {
         showSettingPage(data);
     });
 
-    ui.cardLogout.on("click", function () {
-        storage.remove("user_key");
-        engines.execScriptFile(engines.myEngine().getSource());
-        engines.myEngine().forceStop();
-    });
+    // ui.cardLogout.on("click", function () {
+    //     storage.remove("user_key");
+    //     engines.execScriptFile(engines.myEngine().getSource());
+    //     engines.myEngine().forceStop();
+    // });
 }
 
 function uiUpbarn(data) {
