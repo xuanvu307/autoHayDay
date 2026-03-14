@@ -307,9 +307,15 @@ function showDashboard() {
     });
 
     ui.cardLogout.on("click", function () {
+        engines.all().forEach(e => {
+            if (e.id != engines.myEngine().id) {
+                e.forceStop();
+            }
+        });
         storage.remove("user_key");
-        let loader = storage.get("loader_path");
-        engines.execScriptFile(loader);
+
+        engines.execScriptFile(files.cwd() + "/loader.js");
+
         engines.myEngine().forceStop();
 
     });
