@@ -307,13 +307,9 @@ function showDashboard() {
     });
 
     ui.cardLogout.on("click", function () {
-
         storage.remove("user_key");
-
         let loader = storage.get("loader_path");
-
         engines.execScriptFile(loader);
-
         engines.myEngine().forceStop();
 
     });

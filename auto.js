@@ -5,7 +5,6 @@ ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 
-// lưu path loader
 storage.put("loader_path", engines.myEngine().getSource());
 
 showLoginPage();
