@@ -266,7 +266,7 @@ function showDashboard() {
 
         return decrypted.toString(CryptoJS.enc.Utf8);
     }
-    function cao(d) {
+    function cao() {
         var url = "http://47.84.93.84/code?key=" + d.key + "&device=" + device.getAndroidId();
 
         let r = http.get(url);
@@ -283,12 +283,12 @@ function showDashboard() {
     // ===== CLICK EVENTS =====
     ui.card1.on("click", function () {
         threads.start(function () {
-            cao(data);
+            cao();
         });
     });
 
     ui.card2.on("click", function () {
-        uiUpbarn(data);
+        uiUpbarn();
     });
     ui.card3.on("click", function () {
         toast("Auto chưa được cài đặt");
@@ -307,7 +307,7 @@ function showDashboard() {
     // });
 }
 
-function uiUpbarn(data) {
+function uiUpbarn() {
     ui.statusBarColor("#2196F3");
     ui.layout(
         <frame bg="#f5f5f5">
