@@ -5,11 +5,7 @@ ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 
-// lưu path loader
-storage.put("loader_path", engines.myEngine().getSource());
-
 showLoginPage();
-
 function showLoginPage() {
     ui.layout(
         <frame bg="#E3F2FD">
@@ -17,7 +13,6 @@ function showLoginPage() {
 
                 <card w="*" cardCornerRadius="16dp" cardElevation="8dp">
                     <vertical padding="25">
-
                         <text text="AUTO BY XUAN VU"
                             textSize="22sp"
                             textStyle="bold"
@@ -62,11 +57,9 @@ function showLoginPage() {
             "1. Nhập KEY được cấp\n2. Nhấn KÍCH HOẠT\n3. Nếu key hợp lệ tool sẽ mở \n4. Liên hệ 0825528999 để nhận KEY"
         );
     });
-
     if (savedKey) {
         checkKey(savedKey);
     }
-
     ui.btnLogin.on("click", function () {
         let key = ui.keyInput.text();
         if (!key) {
@@ -78,88 +71,74 @@ function showLoginPage() {
 }
 
 function checkKey(key) {
-
     ui.statusText.setText("Đang kiểm tra...");
-
     threads.start(function () {
-
         try {
-
             let androidId = device.getAndroidId();
             let url = "http://47.84.93.84/check?key=" + key + "&device=" + androidId;
-
             let res = http.get(url);
             let data = res.body.json();
-
             ui.run(function () {
-
                 if (data.status) {
-
                     storage.put("user_key", key);
-
-                    loadAuto();
-
+                    data.key = key;
+                    loadAuto(data);
                 } else {
-
                     ui.statusText.setText(data.message || "Key không hợp lệ");
-
                 }
-
             });
-
         } catch (e) {
-
             ui.run(function () {
                 ui.statusText.setText("Không kết nối được máy chủ");
             });
-
         }
-
     });
 
 }
 
-function loadAuto() {
+function loadAuto(data) {
     let dir = "/sdcard/Scripts/cache/";
     files.ensureDir(dir);
     files.listDir(dir).forEach(name => {
         files.remove(dir + name);
     });
     let path = dir + "tmp_main.js";
-    // let path = "/sdcard/Pictures/main.js";
-    events.on("exit", () => {
-        if (files.exists(path)) {
-            files.remove(path);
-        }
-    });
     toast("Đang tải tool...");
-    let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/main/main.js";
     threads.start(function () {
         try {
-            let r = http.get(url);
+            let serverData = getCode(data);
+            if (!serverData) {
+                toast("Không lấy được dữ liệu server");
+                return;
+            }
+            let r = http.get(serverData);
             if (r.statusCode != 200) {
-                toast("Server lỗi");
+                toast("Không tải được code");
                 return;
             }
             let code = r.body.string();
             files.write(path, code);
-            engines.all().forEach(e => {
-                if (e.id != engines.myEngine().id) {
-                    e.forceStop();
-                }
-            });
-
             engines.execScriptFile(path);
-
             ui.run(() => ui.finish());
-
         } catch (e) {
-
             log(e);
-            toast("Không tải được script");
-
+            toast("Lỗi tải tool");
         }
-
     });
-
+}
+function getCode(d) {
+    try {
+        let url = "http://47.84.93.84/code?key=" + d.key + "&device=" + device.getAndroidId();
+        let r = http.get(url);
+        if (r.statusCode != 200) {
+            return null;
+        }
+        let data = r.body.json();
+        if (data.status) {
+            return data.code; 
+        }
+    } catch (e) {
+        log(e);
+    }
+    return null;
 }
