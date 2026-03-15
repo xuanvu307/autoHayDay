@@ -4,7 +4,7 @@ var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 // ===== START =====
 
-ui.run(() => ui.finish());
+
 showLoginPage();
 // ================= LOGIN =================
 function showLoginPage() {
@@ -414,10 +414,15 @@ function showDashboard(data) {
     });
 
     ui.cardLogout.on("click", function () {
-        toast("Đăng xuất")
-        storage.remove("user_key");
-        // engines.execScriptFile("/sdcard/Scripts/temp_main.js");
-        engines.myEngine().forceStop();
+        dialogs.confirm("Đăng xuất", "Bạn có chắc muốn đăng xuất?")
+            .then(ok => {
+                if (ok) {
+                    storage.remove("user_key");
+                    savedKey = "";
+                    showLoginPage();
+                }
+            });
+
     });
 }
 
