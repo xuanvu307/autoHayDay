@@ -103,7 +103,7 @@ function loadAuto(data) {
         files.remove(dir + name);
     });
     let path = dir + "tmp_main.js";
-    toast("Đang tải tool...");
+    
     threads.start(function () {
         try {
             let serverData = getCode(data);
