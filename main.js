@@ -415,7 +415,7 @@ function showDashboard(data) {
         toast("Đăng xuất")
         storage.remove("user_key");
         // engines.execScriptFile("/sdcard/Scripts/temp_main.js");
-        engines.myEngine().forceStop();
+        // engines.myEngine().forceStop();
     });
 }
 
