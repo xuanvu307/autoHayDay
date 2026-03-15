@@ -6,13 +6,26 @@ var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 var CryptoJS;
 function loadCrypto() {
-    let url = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
-    let path = "/sdcard/crypto-js.js";
-    if (!files.exists(path)) {
-        let lib = http.get(url).body.string();
-        files.write(path, lib);
-    }
-    CryptoJS = require(path);
+    threads.start(function () {
+
+        let url = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
+        let path = "/sdcard/crypto-js.js";
+
+        if (!files.exists(path)) {
+
+            let r = http.get(url);
+
+            if (!r || r.statusCode != 200) {
+                toast("Không tải được CryptoJS");
+                return;
+            }
+
+            let lib = r.body.string();
+            files.write(path, lib);
+        }
+
+        CryptoJS = require(path);
+    });
 }
 loadCrypto();
 showLoginPage();
