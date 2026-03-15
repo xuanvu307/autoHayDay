@@ -153,7 +153,7 @@ function timeLoadFarm(timeout, tolerance) {
     let start = Date.now(), found = false;
     let points = [[27, 252], [30, 252], [24, 252]];
     while (Date.now() - start < timeout) {
-        bamDauX();
+        checkPopupX();
         waitIfPaused();
         for (let [x, y] of points) {
             if (soMauTaiDiem(x, y, "#B1803C", tolerance)) {
