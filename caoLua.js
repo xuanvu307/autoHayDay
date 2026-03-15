@@ -61,7 +61,7 @@ function soMauTaiDiem(x, y, mauCanSo, doLech) {
 function checkPopupX() {
     var pts = [[455, 160], [460, 160], [450, 160], [455, 155], [455, 165]];
     for (var i = 0; i < pts.length; i++) {
-        tamDung()
+        waitIfPaused()
         if (soMauTaiDiem(pts[i][0], pts[i][1], "#E63D46", 50)) {
             click(pts[i][0], pts[i][1]);
             sleep(500);
