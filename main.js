@@ -384,7 +384,8 @@ function showDashboard(data) {
                 </card>
             </vertical>
             <frame
-                w="*">
+                w="*"
+                h= "*">
                 <text
                     text="© Xuan Vu ver 1.0.0"
                     textSize="12sp"
@@ -393,6 +394,7 @@ function showDashboard(data) {
                     layout_gravity="right|bottom"
                     alpha="0.8"
                     margin="12"
+                    paddingRight = "10"
                     w="*"
                     h="*" />
             </frame>
@@ -559,8 +561,7 @@ function uiUpbarn(data) {
 
             </vertical>
             <frame
-                w="*"
-                h= "*">
+                w="*">
                 <text
                     text="© 2026 Xuan Vu"
                     textSize="14sp"
@@ -569,7 +570,6 @@ function uiUpbarn(data) {
                     layout_gravity="right|bottom"
                     alpha="0.8"
                     margin="12"
-                    paddingRight = "10"
                     w="*"
                     h="*" />
             </frame>
