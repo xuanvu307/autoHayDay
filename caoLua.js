@@ -1,4 +1,5 @@
 auto.waitFor();
+requestScreenCapture();
 
 
 const soAccChayMotVong = 15;     // max 90 farm mỗi agent 30 farm
