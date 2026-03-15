@@ -385,7 +385,7 @@ function showDashboard(data) {
             </vertical>
             <frame
                 w="*"
-                h= "*">
+                h="*">
                 <text
                     text="© Xuan Vu ver 1.0.0"
                     textSize="12sp"
@@ -394,7 +394,7 @@ function showDashboard(data) {
                     layout_gravity="right|bottom"
                     alpha="0.8"
                     margin="12"
-                    paddingRight = "10"
+                    paddingRight="10"
                     w="*"
                     h="*" />
             </frame>
@@ -421,36 +421,21 @@ function showDashboard(data) {
     addPressEffect(ui.card4);
     addPressEffect(ui.cardSetting);
     addPressEffect(ui.cardLogout);
-    //let CryptoJS = require("./crypto-js");
-    function decryptCode(data) {
 
-        let key = CryptoJS.SHA256("abc1");
-
-        let decrypted = CryptoJS.AES.decrypt(
-            data,
-            key,
-            { iv: CryptoJS.enc.Hex.parse("00000000000000000000000000000000") }
-        );
-
-        return decrypted.toString(CryptoJS.enc.Utf8);
-    }
-    function cao(d) {
-        var url = "http://47.84.93.84/code?key=" + d.key + "&device=" + device.getAndroidId();
-
-        let r = http.get(url);
-        let data1 = r.body.json();
-        if (data1.status) {
-            eval(data1.code)
-
-        } else {
-            toast("Bạn không có quyền truy cập auto");
-        }
-    }
     // ===== CLICK EVENTS =====
     ui.card1.on("click", function () {
-        threads.start(function () {
-            cao(data);
-        });
+
+        let linkCao = dir+"cao.js"
+
+        if (!files.exists(path)) {
+            toast("Không tìm thấy AUTO cào");
+            return;
+        }
+
+        ui.finish();
+
+        engines.execScriptFile(linkCao, toast("bắt đầu auto cào"));
+
     });
 
     ui.card2.on("click", function () {
