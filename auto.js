@@ -11,7 +11,6 @@ storage.put("loader_path", engines.myEngine().getSource());
 showLoginPage();
 
 function showLoginPage() {
-
     ui.layout(
         <frame bg="#E3F2FD">
             <vertical gravity="center" padding="30">
@@ -19,7 +18,7 @@ function showLoginPage() {
                 <card w="*" cardCornerRadius="16dp" cardElevation="8dp">
                     <vertical padding="25">
 
-                        <text text="AUTO TOOL PRO"
+                        <text text="AUTO BY XUAN VU"
                             textSize="22sp"
                             textStyle="bold"
                             textColor="#1565C0"
@@ -33,6 +32,11 @@ function showLoginPage() {
                         <input id="keyInput"
                             hint="Nhập key..."
                             text={savedKey} />
+                        <text id="helpText"
+                            text="Hướng dẫn lấy KEY"
+                            textColor="#1565C0"
+                            gravity="right"
+                            marginTop="4" />
 
                         <button id="btnLogin"
                             text="KÍCH HOẠT"
@@ -52,24 +56,25 @@ function showLoginPage() {
             </vertical>
         </frame>
     );
+    ui.helpText.click(() => {
+        dialogs.alert(
+            "Hướng dẫn",
+            "1. Nhập KEY được cấp\n2. Nhấn KÍCH HOẠT\n3. Nếu key hợp lệ tool sẽ mở \n4. Liên hệ 0825528999 để nhận KEY"
+        );
+    });
 
     if (savedKey) {
         checkKey(savedKey);
     }
 
     ui.btnLogin.on("click", function () {
-
         let key = ui.keyInput.text();
-
         if (!key) {
             ui.statusText.setText("Vui lòng nhập key");
             return;
         }
-
         checkKey(key);
-
     });
-
 }
 
 function checkKey(key) {
@@ -121,6 +126,7 @@ function loadAuto() {
         files.remove(dir + name);
     });
     let path = dir + "tmp_main.js";
+    // let path = "/sdcard/Pictures/main.js";
     events.on("exit", () => {
         if (files.exists(path)) {
             files.remove(path);
@@ -145,7 +151,7 @@ function loadAuto() {
 
             engines.execScriptFile(path);
 
-            // ui.run(() => ui.finish());
+            ui.run(() => ui.finish());
 
         } catch (e) {
 
