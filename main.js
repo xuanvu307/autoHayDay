@@ -427,7 +427,7 @@ function showDashboard(data) {
 
         let linkCao = dir+"cao.js"
 
-        if (!files.exists(path)) {
+        if (!files.exists(linkCao)) {
             toast("Không tìm thấy AUTO cào");
             return;
         }
@@ -574,17 +574,20 @@ function uiUpbarn(data) {
         else if (ui.modat.checked) loaiHang = "modat"
         else if (ui.barnSilo.checked) loaiHang = "baSi"
 
-        // let path = files.join(files.cwd(), "/upBarn.js");
+        let path = dir + "upBarn.js"
 
-        // if (!files.exists(path)) {
-        //     toast("Không tìm thấy upBarn.js");
-        //     return;
-        // }
+        if (!files.exists(path)) {
+            toast("Không tìm thấy upBarn.js");
+            return;
+        }
         let config = JSON.parse(files.read(configPath));
         config.upBarn.banRd = banRd;
         config.upBarn.loaiHang = loaiHang;
         files.write(configPath, JSON.stringify(config));
-        showDashboard(data);
+        
+        ui.finish();
+
+        engines.execScriptFile(path, toast("bắt đầu up hàng"));
     });
 
 
