@@ -15,7 +15,7 @@ function showLoginPage() {
                 <card w="*" cardCornerRadius="16dp" cardElevation="8dp">
                     <vertical padding="25">
 
-                        <text text="AUTO TOOL PRO"
+                        <text text="AUTO BY XUAN VU"
                             textSize="22sp"
                             textStyle="bold"
                             textColor="#1565C0"
