@@ -574,7 +574,7 @@ function uiUpbarn(data) {
         else if (ui.modat.checked) loaiHang = "modat"
         else if (ui.barnSilo.checked) loaiHang = "baSi"
 
-        let path = dir + "upBarn.js"
+        let path = dir + "barn.js"
 
         if (!files.exists(path)) {
             toast("Không tìm thấy upBarn.js");

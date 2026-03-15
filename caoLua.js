@@ -487,7 +487,7 @@ panel.setPosition(2, 300);
 
 var paused = false;
 
-panel.txt.setText = "V:" + vong+ " A: " + acc;
+panel.txt.setText("V:" + vong+ " A: " + acc);
 panel.btnPause.on("click", () => {
     paused = !paused;
     panel.btnPause.setText(paused ? "▶ CONTINUE" : "⏸ PAUSE");
