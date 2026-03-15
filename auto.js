@@ -127,24 +127,16 @@ function loadAuto() {
         }
     });
     toast("Đang tải tool...");
-
     let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/main/main.js";
-
     threads.start(function () {
-
         try {
-
             let r = http.get(url);
-
             if (r.statusCode != 200) {
                 toast("Server lỗi");
                 return;
             }
-
             let code = r.body.string();
-
             files.write(path, code);
-
             engines.all().forEach(e => {
                 if (e.id != engines.myEngine().id) {
                     e.forceStop();
@@ -153,7 +145,7 @@ function loadAuto() {
 
             engines.execScriptFile(path);
 
-            ui.run(() => ui.finish());
+            // ui.run(() => ui.finish());
 
         } catch (e) {
 
