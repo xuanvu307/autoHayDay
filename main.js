@@ -2,8 +2,48 @@
 ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
-// ===== START =====
-toast("Đang tải tool.....")
+let dir = context.getCacheDir().getAbsolutePath() + "/temp/";
+
+function loadAuto() {
+    files.ensureDir(dir);
+    let cao = dir + "cao.js";
+    let barn = dir + "barn.js";
+    let the = dir + "theMau.js";
+    let urlCao = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/caoLua.js"
+    let urlBarn = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/upBarn.js"
+    let urlThe = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/refs/heads/main/theMau.js"
+    loadCode(urlCao, cao, "Cào");
+    loadCode(urlBarn, barn, "Up Barn");
+    loadCode(urlThe, the, "Thẻ Màu");
+}
+
+function loadCode(url, path, codeName) {
+    threads.start(function () {
+        try {
+            if (!url) {
+                toast("Lỗi không xác định");
+                return;
+            }
+            let r = http.get(url);
+            if (!r || r.statusCode != 200) {
+                toast("Không tải được auto " + codeName);
+                return;
+            }
+            let code = r.body.string();
+            files.write(path, code);
+            toast("Đã tải Auto " + codeName);
+
+        } catch (e) {
+            log(e);
+            toast("Lỗi tải auto " + codeName);
+        }
+    });
+}
+function deleteCode() {
+    if (files.exists(dir)) {
+        files.removeDir(dir);
+    }
+}
 
 showLoginPage();
 // ================= LOGIN =================
@@ -15,7 +55,7 @@ function showLoginPage() {
                 <card w="*" cardCornerRadius="16dp" cardElevation="8dp">
                     <vertical padding="25">
 
-                        <text text="AUTO BY XUAN VU"
+                        <text text="AUTO TOOL PRO"
                             textSize="22sp"
                             textStyle="bold"
                             textColor="#1565C0"
@@ -49,7 +89,6 @@ function showLoginPage() {
 
                     </vertical>
                 </card>
-
             </vertical>
         </frame>
     );
@@ -97,6 +136,7 @@ function checkKey(key) {
                 if (data.status) {
                     storage.put("user_key", key);
                     data.key = key;
+                    loadAuto();
                     showDashboard(data);
                 } else {
                     ui.statusText.setText(data.message || "Key không hợp lệ");
@@ -342,9 +382,20 @@ function showDashboard(data) {
 
                     </horizontal>
                 </card>
-
-
             </vertical>
+            <frame
+                w="*">
+                <text
+                    text="© Xuan Vu ver 1.0.0"
+                    textSize="12sp"
+                    textColor="#c01111ff"
+                    gravity="right|bottom"
+                    layout_gravity="right|bottom"
+                    alpha="0.8"
+                    margin="12"
+                    w="*"
+                    h="*" />
+            </frame>
 
         </vertical>
     );
@@ -419,6 +470,7 @@ function showDashboard(data) {
                 if (ok) {
                     storage.remove("user_key");
                     savedKey = "";
+                    deleteCode();
                     showLoginPage();
                 }
             });
@@ -507,8 +559,7 @@ function uiUpbarn(data) {
 
             </vertical>
             <frame
-                w="*"
-                h="*">
+                w="*">
                 <text
                     text="© 2026 Xuan Vu"
                     textSize="12sp"
