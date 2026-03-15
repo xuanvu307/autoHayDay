@@ -3,6 +3,8 @@ ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 // ===== START =====
+
+ui.run(() => ui.finish());
 showLoginPage();
 // ================= LOGIN =================
 function showLoginPage() {
