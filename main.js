@@ -997,9 +997,3 @@ function showSettingPage3(data) {
         showSettingPage3(data);
     });
 }
-events.on("exit", function () {
-    if (files.exists(path)) {
-        files.remove(path);
-        log("Temp deleted");
-    }
-});

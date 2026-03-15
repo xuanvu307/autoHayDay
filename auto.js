@@ -107,13 +107,17 @@ function checkKey(key) {
 }
 
 function loadAuto(data) {
-    let dir = "/sdcard/Scripts/cache/";
+    let dir = context.getCacheDir().getAbsolutePath() + "/temp/";
     files.ensureDir(dir);
     files.listDir(dir).forEach(name => {
         files.remove(dir + name);
     });
-    let path = dir + "tmp_main.js";
-
+    let path = dir + "main.js";
+    events.on("exit", () => {
+        if (files.exists(path)) {
+            files.remove(path);
+        }
+    });
     threads.start(function () {
         try {
             let serverData = getCode(data);
