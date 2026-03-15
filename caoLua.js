@@ -32,14 +32,30 @@ sleep(1000)
 
 // bấm dấu X
 function soMauTaiDiem(x, y, mauCanSo, doLech) {
-    try {
-        var img = captureScreen();
-        var mau = images.pixel(img, x, y);
-        img.recycle();
-    } catch (error) {
-        toast(error);
-    }
-    return colors.isSimilar(mau, mauCanSo, doLech || 10);
+  doLech = doLech || 10;
+
+  try {
+    var img = captureScreen();
+    var mau = images.pixel(img, x, y);
+    img.recycle();
+  } catch (error) {
+    toast(error);
+    return false;
+  }
+
+  var r1 = colors.red(mau);
+  var g1 = colors.green(mau);
+  var b1 = colors.blue(mau);
+
+  var r2 = colors.red(mauCanSo);
+  var g2 = colors.green(mauCanSo);
+  var b2 = colors.blue(mauCanSo);
+
+  return (
+    Math.abs(r1 - r2) <= doLech &&
+    Math.abs(g1 - g2) <= doLech &&
+    Math.abs(b1 - b2) <= doLech
+  );
 }
 
 function checkPopupX() {
