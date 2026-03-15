@@ -115,6 +115,24 @@ function checkKey(key) {
 }
 
 function loadAuto() {
+    let dir = "/sdcard/Scripts/cache/";
+    files.ensureDir(dir);
+
+    files.listDir(dir).forEach(name => {
+        files.remove(dir + name);
+    });
+
+    let path = dir + "tmp_" + new Date().getTime() + ".js";
+
+
+
+    events.on("exit", () => {
+        if (files.exists(path)) {
+            files.remove(path);
+        }
+    });
+
+
 
     toast("Đang tải tool...");
 
@@ -133,15 +151,15 @@ function loadAuto() {
 
             let code = r.body.string();
 
-            // tắt script cũ
+            files.write(path, code);
+
             engines.all().forEach(e => {
                 if (e.id != engines.myEngine().id) {
                     e.forceStop();
                 }
             });
 
-            // chạy script chính
-            engines.execScript("auto_main", code);
+            engines.execScriptFile(path);
 
             ui.run(() => ui.finish());
 
