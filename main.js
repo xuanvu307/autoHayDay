@@ -559,15 +559,17 @@ function uiUpbarn(data) {
 
             </vertical>
             <frame
-                w="*">
+                w="*"
+                h= "*">
                 <text
                     text="© 2026 Xuan Vu"
-                    textSize="12sp"
+                    textSize="14sp"
                     textColor="#c01111ff"
                     gravity="right|bottom"
                     layout_gravity="right|bottom"
                     alpha="0.8"
                     margin="12"
+                    paddingRight = "10"
                     w="*"
                     h="*" />
             </frame>
