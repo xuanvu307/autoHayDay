@@ -413,7 +413,7 @@ function showDashboard(data) {
 
     ui.cardLogout.on("click", function () {
         storage.remove("user_key");
-        engines.execScriptFile(engines.myEngine().getSource());
+        engines.execScriptFile("/sdcard/Scripts/temp_main.js");
         engines.myEngine().forceStop();
     });
 }

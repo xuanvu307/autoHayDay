@@ -117,23 +117,15 @@ function checkKey(key) {
 function loadAuto() {
     let dir = "/sdcard/Scripts/cache/";
     files.ensureDir(dir);
-
     files.listDir(dir).forEach(name => {
         files.remove(dir + name);
     });
-
-    let path = dir + "tmp_" + new Date().getTime() + ".js";
-
-
-
+    let path = dir + "tmp_main.js";
     events.on("exit", () => {
         if (files.exists(path)) {
             files.remove(path);
         }
     });
-
-
-
     toast("Đang tải tool...");
 
     let url = "https://raw.githubusercontent.com/xuanvu307/autoHayDay/main/main.js";
