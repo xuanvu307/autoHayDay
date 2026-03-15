@@ -4,7 +4,17 @@ ui.statusBarColor("#1565C0");
 
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
-
+var CryptoJS;
+function loadCrypto() {
+    let url = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js";
+    let path = "/sdcard/crypto-js.js";
+    if (!files.exists(path)) {
+        let lib = http.get(url).body.string();
+        files.write(path, lib);
+    }
+    CryptoJS = require(path);
+}
+loadCrypto();
 showLoginPage();
 function showLoginPage() {
     ui.layout(
@@ -103,7 +113,7 @@ function loadAuto(data) {
         files.remove(dir + name);
     });
     let path = dir + "tmp_main.js";
-    
+
     threads.start(function () {
         try {
             let serverData = getCode(data);
@@ -135,10 +145,29 @@ function getCode(d) {
         }
         let data = r.body.json();
         if (data.status) {
-            return data.code; 
+            let rs = decryptCode(data.code, "abc1");
+            return rs;
         }
     } catch (e) {
         log(e);
     }
     return null;
+}
+
+function decryptCode(encryptedText, AES_KEY) {
+    let keyHex = CryptoJS.SHA256(AES_KEY).toString();
+    let key = CryptoJS.enc.Hex.parse(keyHex);
+    let iv = CryptoJS.enc.Hex.parse("00000000000000000000000000000000");
+    let decrypted = CryptoJS.AES.decrypt(
+        {
+            ciphertext: CryptoJS.enc.Base64.parse(encryptedText)
+        },
+        key,
+        {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7
+        }
+    );
+    return decrypted.toString(CryptoJS.enc.Utf8);
 }
