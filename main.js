@@ -3,7 +3,7 @@ ui.statusBarColor("#1565C0");
 var storage = storages.create("APP_LICENSE");
 var savedKey = storage.get("user_key", "");
 // ===== START =====
-
+toast("Đang tải tool.....")
 
 showLoginPage();
 // ================= LOGIN =================
